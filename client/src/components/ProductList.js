@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import axios from "axios";
+import {useQuery} from "react-query";
 import {Link} from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function ProductList() {
-    const [products, setProducts] = useState([]);
-    useEffect(() => {
-        (async function () {
-            try {
-                const res = await axios.get(`/api/products`);
-                setProducts(res.data.products);
-            } catch (error) {
+    const {data: products, isLoading} = useQuery('Products', async () => {
+        try {
+            const res = await axios.get(`/api/products`);
+            return res.data.products;
+        } catch (error) {
+            console.error(error);
+        }
+    })
 
-            }
-        })();
-    }, []);
-    return products.map(product => (
+    return !isLoading ? products.map(product => (
         <ProductItem key={product.id} product={product}/>
-    ));
+    )) : <LoadingSpinner/>;
 }
 
 function ProductItem({product}) {
@@ -40,20 +40,20 @@ function ProductItem({product}) {
                     </h1>
                     <p className="leading-relaxed mb-3">{description}</p>
                     <div className="flex items-center flex-wrap ">
-            <Link to={`/${id}`} className="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0">
-              See More
-              <svg
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="w-4 h-4 ml-2"
-                  viewBox="0 0 24 24"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </Link>
+                        <Link to={`/${id}`} className="text-indigo-400 inline-flex items-center md:mb-2 lg:mb-0">
+                            See More
+                            <svg
+                                fill="none"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                className="w-4 h-4 ml-2"
+                                viewBox="0 0 24 24"
+                            >
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </Link>
                         <span
                             className="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-lg pr-3 py-1 border-gray-800 font-bold">
               {price}
