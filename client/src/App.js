@@ -16,8 +16,8 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <CartProvider stripe={stripePromise} mode="checkout-session" currency="USD">
-                <Navbar/>
                 <Router>
+                    <Navbar/>
                     <Toaster position="bottom-center"/>
                     <Switch>
                         <Route component={Home} exact path="/"/>
