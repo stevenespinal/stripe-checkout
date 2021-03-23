@@ -10,7 +10,7 @@ import {Toaster} from "react-hot-toast";
 import Navbar from "./components/Navbar";
 
 const queryClient = new QueryClient();
-const stripePromise = loadStripe(process.env.REACT_APP_KEY);
+const stripePromise = loadStripe("pk_test_Kzq2cNmcle5KbmLqwAyZQatc00DDdIMax7");
 
 function App() {
     return (
