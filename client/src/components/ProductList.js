@@ -3,6 +3,7 @@ import axios from "axios";
 import {useQuery} from "react-query";
 import {Link} from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
+import formatProductPrice from "../utils/formatProductPrice";
 
 export default function ProductList() {
     const {data: products, isLoading} = useQuery('Products', async () => {
@@ -10,7 +11,7 @@ export default function ProductList() {
             const res = await axios.get(`/api/products`);
             return res.data.products;
         } catch (error) {
-            console.error(error);
+            console.error(error.message);
         }
     })
 
@@ -20,7 +21,8 @@ export default function ProductList() {
 }
 
 function ProductItem({product}) {
-    const {id, image, name, category, sku, price, description, description_long, currency} = product;
+    const formattedPrice = formatProductPrice(product);
+    const {id, image, name, category, description} = product;
     return (
         <div className="p-4 md:w-1/3">
             <div className="h-full border-2 border-gray-800 rounded-lg overflow-hidden">
@@ -56,7 +58,7 @@ function ProductItem({product}) {
                         </Link>
                         <span
                             className="text-gray-500 mr-3 inline-flex items-center lg:ml-auto md:ml-0 ml-auto leading-none text-lg pr-3 py-1 border-gray-800 font-bold">
-              {price}
+              {formattedPrice}
             </span>
                     </div>
                 </div>
