@@ -19,10 +19,7 @@ export default function Result() {
         data,
         isLoading,
         isError
-    } = useQuery('Result', () => {
-        clearCart();
-        sessionId ? axios(`/api/checkout-sessions/${sessionId}`).then(res => res.data) : null;
-    })
+    } = useQuery('Result', () => sessionId ? axios(`/api/checkout-sessions/${sessionId}`).then(res => res.data) : null);
 
     if (isLoading) return <LoadingSpinner/>;
     if (!data && !isLoading) return (
