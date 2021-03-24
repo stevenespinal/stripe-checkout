@@ -13,7 +13,6 @@ export default function Result() {
     const queryString = useQueryString();
 
     const sessionId = queryString.get('session_id');
-    const {clearCart} = useShoppingCart();
 
     const {
         data,
